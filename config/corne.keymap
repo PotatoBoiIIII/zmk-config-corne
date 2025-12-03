@@ -7,281 +7,206 @@
 #include <behaviors.dtsi>
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/bt.h>
-#include <dt-bindings/zmk/outputs.h>
-#include <dt-bindings/zmk/ext_power.h>
-#include <dt-bindings/zmk/pointing.h>
-#include <dt-bindings/zmk/reset.h>
+#include <dt-bindings/zmk/mouse.h>
 
-#define DEFAULT 0
-#define NUM 1
-#define SYM 2
-#define FUNC 3
 
-#define ______ &trans
 
 &mt {
-  tapping-term-ms = <200>;
-  flavor = "tap-preferred";
-};
-
-/ {
-    conditional_layers {
-        compatible = "zmk,conditional-layers";
-        tri_layer {
-            if-layers = <NUM SYM>;
-            then-layer = <FUNC>;
-        };
-    };
-    behaviors {
-
-        // Home row mods
-        hm: homerow_mods {
-            compatible = "zmk,behavior-hold-tap";
-            #binding-cells = <2>;
-            tapping-term-ms = <200>;
-            quick-tap-ms = <0>;
-            flavor = "tap-preferred";
-            bindings = <&kp>, <&kp>;
-        };
-        // Tap dance single tap = C double tap = gui+c
-        copy_dance: tapdance_copy {
-            compatible = "zmk,behavior-tap-dance";
-            #binding-cells = <0>;
-            tapping-term-ms = <180>;
-            bindings = <&kp C>, <&kp LG(C)>;
-        };
-        // Tap dance single tap = V double tap = gui+v
-        paste_dance: tabdance_paste {
-            compatible = "zmk,behavior-tap-dance";
-            #binding-cells = <0>;
-            tapping-term-ms = <180>;
-            bindings = <&kp V>, <&kp LG(V)>;
-        };
-        // Tap dance single tap = . double tap = SPACE
-        dot_spc: dot_space {
-            compatible = "zmk,behavior-tap-dance";
-            #binding-cells = <0>;
-            tapping-term-ms = <200>;
-            bindings = <&kp DOT>, <&kp SPACE>;
-        };
-        // Tap dance single tap = Z double tap = CAPS LOCK
-        caps_dance: tapdance_caps {
-            compatible = "zmk,behavior-tap-dance";
-            #binding-cells = <0>;
-            tapping-term-ms = <280>;
-            bindings = <&kp Z>, <&kp CAPS>;
-        };
-        // Tap dance single tap = X double tap = gui+x
-        cut_dance: tapdance_cut {
-            compatible = "zmk,behavior-tap-dance";
-            #binding-cells = <0>;
-            tapping-term-ms = <180>;
-            bindings = <&kp X>, <&kp LG(X)>;
-        };
-        // Tap dance single tap = P double tap = gui+shift+v
-        app_paste: app_paste {
-            compatible = "zmk,behavior-tap-dance";
-            #binding-cells = <0>;
-            tapping-term-ms = <180>;
-            bindings = <&kp P>, <&kp LG(LS(V))>;
-        };
-        // Tap dance single tap = H double tap = Raycast seach (CMD + space)
-        search_dance: tapdance_search {
-            compatible = "zmk,behavior-tap-dance";
-            #binding-cells = <0>;
-            tapping-term-ms = <180>;
-            bindings = <&kp H>, <&kp LG(SPACE)>;
-        };
-        // Enable hyper key when tapped
-        tp: tap-preferred {
-            compatible = "zmk,behavior-hold-tap";
-            label = "TAP-PREFERRED";
-            #binding-cells = <2>;
-            tapping-term-ms = <150>;
-            quick-tap-ms = <0>;
-            flavor = "tap-preferred";
-            bindings = <&kp>, <&kp>;
-        };
-    };
-
-    /*                KEY POSITIONS
-     ╭────────────────────╮ ╭────────────────────╮
-     │  0   1   2   3   4 │ │  5   6   7   8   9 │
-     │ 10  11  12  13  14 │ │ 15  16  17  18  19 │
-     │ 20  21  22  23  24 │ │ 25  26  27  28  29 │
-     ╰───────╮ 30  31  32 │ │ 33  34  35╭────────╯
-             ╰────────────╯ ╰───────────╯            */
-
+    tapping-term-ms = <201>;
+    flavor = "tap-preferred";
+ };
+&sk {
+     release-after-ms = <2000>;
+     quick-release;
+ };
+ 
+/* Layers */
+#define AL1 0
+#define AL2 1
+#define SM1 2
+#define SM2 3	
+#define NM1 4	
+#define SYS 5
+#define BT 6	
+#define AL2U 7
+/ { 
     combos {
         compatible = "zmk,combos";
-        // Combo to type < > and move cursor left
-        lt_gt_combo {
-            timeout-ms = <50>;
-            key-positions = <1 2>;
-            layers = <SYM>;
-            bindings = <&lt_gt_macro>;
-         };
-        // Combo to type { } and move cursor left
-        lb_rb_combo {
-            timeout-ms = <50>;
-            key-positions = <3 4>;
-            layers = <SYM>;
-            bindings = <&lb_rb_macro>;
+        combo_sys {
+            timeout-ms = <30>;
+	    key-positions = <3 4 5>;
+            bindings = <&to SYS>;
         };
-        // Combo to type ( ) and move cursor left
-        lp_rp_combo {
-            timeout-ms = <50>;
-            key-positions = <13 14>;
-            layers = <SYM>;
-            bindings = <&lp_rp_macro>;
+        combo_caps {
+            timeout-ms = <30>;
+	    key-positions = <10 11 12>;
+            bindings = <&caps_word>;
         };
-        // Combo to type [ ] and move cursor left
-        ls_rs_combo {
-            timeout-ms = <50>;
+        combo_bt  {
+            timeout-ms = <10>;
             key-positions = <11 12>;
-            layers = <SYM>;
-            bindings = <&ls_rs_macro>;
+            bindings = <&to BT>;
+	    layers = <SM1>; 
         };
-        // Combo to press the middle mouse button
-        mmb_combo {
-            timeout-ms = <50>;
-            key-positions = <25 26>;
-            layers = <SYM>;
-            bindings = <&mkp MCLK>;
+        lalt {
+            timeout-ms = <20>;
+	    key-positions = <8 9>;
+            bindings = <&kp LALT>; 
+	    layers = <SYS>; 
         };
-        // Combo to go Next
-        next_combo {
-            timeout-ms = <50>;
-            key-positions = <23 24>;
-            layers = <SYM>;
-            bindings = <&kp C_NEXT>;
+        lclk {
+            timeout-ms = <20>;
+	    key-positions = <10 11>;
+            bindings = <&mkp LCLK>;
+	    layers = <SYS>;
         };
-        // Combo to go Previous
-        prev_combo {
-            timeout-ms = <50>;
-            key-positions = <21 22>;
-            layers = <SYM>;
-            bindings = <&kp C_PREV>;
+        rclk {
+            timeout-ms = <20>;
+	    key-positions = <3 4>;
+            bindings = <&mkp RCLK>;
+	    layers = <SYS>;
         };
-     };
 
-    macros {
-        // Macro to exit vim: ESC : W Q
-        vim_wq: vim_quit {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&macro_tap &kp ESC &kp COLON &kp W &kp Q &kp ENTER>;
-        };
-        // Macro to exit vim: ESC : Q !
-        vim_q: vim_quit_force {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&macro_tap &kp ESC &kp COLON &kp Q &kp EXCL &kp ENTER>;
-        };
-        // Macro to type < > and move cursor left
-        lt_gt_macro: lt_gt_macro_with_cursor {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&macro_tap &kp LT &kp GT &kp LEFT>;
-        };
-        // Macro to type { } and move cursor left
-        lb_rb_macro: lb_rb_macro_with_cursor {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&macro_tap &kp LBRC &kp RBRC &kp LEFT>;
-        };
-        // Macro to type ( ) and move cursor left
-        lp_rp_macro: lp_rp_macro_with_cursor {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&macro_tap &kp LPAR &kp RPAR &kp LEFT>;
-        };
-        // Macro to type [ ] and move cursor left
-        ls_rs_macro: ls_rs_macro_with_cursor {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&macro_tap &kp LBKT &kp RBKT &kp LEFT>;
-        };
-        // Macro to open homerow app (LGUI+LCTRL+LSHFT) 
-        homeapp: homeapp {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&macro_press &kp LGUI &kp LCTRL &kp LSHFT>,
-                        <&macro_release &kp LSHFT &kp LCTRL &kp LGUI>;
-        };
-        // Macro to type "" and move cursor left
-        dq_macro: dq_macro_with_cursor {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&macro_tap &kp DQT &kp DQT &kp LEFT>;
-        };
-        nomachine: nomachine_settings {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&macro_press &kp RCTRL &kp RALT &kp N0>,
-                       <&macro_release &kp N0 &kp RALT &kp RCTRL>;
-        };
+
     };
 
-    keymap {
-        compatible = "zmk,keymap";
-
-        default_layer {
-            label = "DEFAULT";
-            bindings = <
-// ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮   ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮
-        &kp Q       &kp W         &kp E          &kp R          &kp T             &kp Y         &kp U         &kp I         &kp O       &app_paste
-// ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤   ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
-        &kp A       &hm LGUI S   &hm LCTRL D     &hm LSHFT F    &kp G         &search_dance     &hm RSHFT J   &hm RCTRL K   &hm RGUI L    &kp SEMI
-// ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤   ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
-    &caps_dance    &cut_dance      &copy_dance    &paste_dance    &kp B           &kp N         &kp M         &kp COMMA     &kp DOT       &kp FSLH
-// ╰─────────────┴─────────────┼─────────────┼─────────────┼─────────────┤   ├─────────────┼─────────────┼─────────────┼─────────────┴─────────────╯
-                    &tp LG(LC(LA(LSHFT))) TAB  &lt NUM DEL    &kp ENTER          &kp SPACE   &lt SYM BSPC  &tp LG(LC(LA(LSHFT))) ESC
-//                             ╰─────────────┴─────────────┴─────────────╯   ╰─────────────┴─────────────┴─────────────╯
-            >;
+    behaviors {
+        hm_l: homerow_mods_left {
+            compatible = "zmk,behavior-hold-tap";
+            label = "HOMEROW_MODS_L";
+            #binding-cells = <2>;
+            tapping-term-ms = <300>;
+            quick-tap-ms = <250>;
+            flavor = "tap-preferred";
+            bindings = <&kp>, <&kp>;
         };
-        num_layer {
-            label = "NUM";
-            bindings = <
-// ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮   ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮
-       &vim_wq     &kp UNDER     &kp HASH      &kp DLLR     &kp AT            &kp PLUS       &kp N7        &kp N8       &kp N9       &kp STAR
-// ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤   ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
-       &none     &kp TILDE     &kp GRAVE     &kp PRCNT    &kp EXCL          &kp MINUS      &kp N4        &kp N5       &kp N6       &kp SLASH
-// ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤   ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
-       &vim_q        &kp BSLH      &kp PIPE      &kp AMPS     &kp CARET         &kp N0         &kp N1        &kp N2       &kp N3       &kp EQUAL
-// ╰─────────────┴─────────────┼─────────────┼─────────────┼─────────────┤   ├─────────────┼─────────────┼─────────────┼─────────────┴─────────────╯
-                                  &kp LGUI      ______         ______          &dot_spc       ______       &kp RALT
-//                             ╰─────────────┴─────────────┴─────────────╯   ╰─────────────┴─────────────┴─────────────╯
-            >;
+        hm_r: homerow_mods_right {
+            compatible = "zmk,behavior-hold-tap";
+            label = "HOMEROW_MODS_R";
+            #binding-cells = <2>;
+            tapping-term-ms = <300>;
+            quick-tap-ms = <250>;
+            flavor = "tap-preferred";
+            bindings = <&kp>, <&kp>;
         };
-        sym_layer {
-            label = "SYM";
-            bindings = <
-// ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮   ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮
-      &dq_macro      &kp LT       &kp GT         &kp LBRC      &kp RBRC        &mmv MOVE_LEFT  &mmv MOVE_DOWN &mmv MOVE_UP  &mmv MOVE_RIGHT  &msc SCRL_UP
-// ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤   ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
-      &kp DQT      &kp LBKT     &kp RBKT       &kp LPAR      &kp RPAR          &kp LEFT        &kp DOWN     &kp UP       &kp RIGHT     &homeapp
-// ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤   ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
-      &kp SQT     &kp C_PP     &kp C_MUTE  &kp C_VOL_DN   &kp C_VOL_UP         &mkp LCLK      &mkp RCLK     &kp LG(LEFT)  &kp LG(RIGHT)  &msc SCRL_DOWN
-// ╰─────────────┴─────────────┼─────────────┼─────────────┼─────────────┤   ├─────────────┼─────────────┼─────────────┼─────────────┴─────────────╯
-                                   ______       ______        ______             ______        ______        ______
-//                             ╰─────────────┴─────────────┴─────────────╯   ╰─────────────┴─────────────┴─────────────╯
-            >;
+        sr: shift_layer {
+            compatible = "zmk,behavior-hold-tap";
+            label = "SHIFT_LAYER";
+            #binding-cells = <2>;
+            tapping-term-ms = <300>;
+            quick_tap_ms = <0>;
+            flavor = "tap-preferred";
+            bindings = <&kp>, <&to>;
+	    retro-tap;
         };
-
-        func_layer {
-            label = "FUNC";
-            bindings = <
-// ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮   ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮
-     &bt BT_CLR    &bt BT_NXT    &bt BT_PRV    &bootloader   &sys_reset       &sys_reset    &bootloader    &none         &none         &none
-// ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤   ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
-       &kp F11       &kp F12    &bt BT_SEL 0   &bt BT_SEL 1  &bt BT_SEL 2       &kp LNLCK     &nomachine   &out OUT_TOG  &none         &none
-// ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤   ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
-       &kp F1        &kp F2        &kp F3        &kp F4        &kp F5           &kp F6         &kp F7       &kp F8        &kp F9         &kp F10
-// ╰─────────────┴─────────────┼─────────────┼─────────────┼─────────────┤   ├─────────────┼─────────────┼─────────────┼─────────────┴─────────────╯
-                                   ______        ______        ______            ______        ______        ______
-//                             ╰─────────────┴─────────────┴─────────────╯   ╰─────────────┴─────────────┴─────────────╯
-            >;
+        hl_l: homerow_layers_left {
+            compatible = "zmk,behavior-hold-tap";
+            label = "HOMEROW_LAYERS_L";
+            #binding-cells = <2>;
+            tapping-term-ms = <220>;
+            quick-tap-ms = <250>;
+            flavor = "tap-preferred";
+            bindings = <&mo>, <&kp>;
         };
+        hl_r: homerow_layers_right {
+            compatible = "zmk,behavior-hold-tap";
+            label = "HOMEROW_LAYERS_R";
+            #binding-cells = <2>;
+            tapping-term-ms = <220>;
+            quick-tap-ms = <250>;
+            flavor = "tap-preferred";
+            bindings = <&mo>, <&kp>;
+        };
+	td: tapdance {
+            compatible = "zmk,behavior-hold-tap";
+            label = "TAPDANCE";
+            #binding-cells = <2>;
+            tapping-term-ms = <190>;
+            quick-tap-ms = <250>;
+            flavor = "tap-preferred";
+            bindings = <&kp>, <&kp>;
+        };
+	alpha2macro: behavior_macro_1 {
+		compatible = "zmk,behavior-macro";
+		label = "MACRO1";
+		#binding-cells = <0>;
+		bindings = < &sl AL2 >;
+	};
+	caps_alpha2macro: behavior_macro_2 {
+		compatible = "zmk,behavior-macro";
+		label = "MACRO2";
+		#binding-cells = <0>;
+		bindings = < &sl AL2U >;
+	};
     };
+// 				0		1		2					3		4			5
+// 		6		7		8		9 					10		11			12 		13
+//								14	15 	16 	17		
+       keymap {
+                compatible = "zmk,keymap";
+                
+       		alpha1 {
+		bindings = <
+		 		&hm_l LCTL L 	&hm_l LALT G 	&hm_l LGUI D		&hm_r RGUI H 	&hm_r RALT U    	&hm_r RCTL O	  
+		&hl_l NM1 I	&hl_l SM2 S	&hl_l SM1 R	&hl_l SYS T 	 	&hl_r SYS N    	&hl_r SM1 E   		&hl_r SM2 A 	&hl_r NM1 C
+			 	 		 		&mt LC(LS(LALT)) SPC &key_repeat  &caps_alpha2macro	&alpha2macro	 	
+		>;
+		};
+       		alpha2 {
+		bindings = <
+		 	 	&kp V 		&kp W		&kp M	 	 	&kp F    	&kp SQT			&kp Z 		
+		&kp Q	 	&kp J 		&kp P		&kp K 			&kp B 		&kp DOT			&kp X		&kp Y 
+			 	 		 		&sk LSHIFT 		&none &none &sl AL2U	
+		>;
+		};
+		
+       		sym1 {
+		bindings = <
+		 		&kp LA(N3)   	&kp LS(N3)	&kp DLLR	    	&kp LS(COMMA)	&kp LS(DOT)		&kp CARET	
+		&kp GRAVE	&kp TILDE 	&kp MINUS      	&kp BSLH	 	&kp LBKT	&kp RBKT	 	&kp PIPE 	&kp SLASH
+				  				&trans  		&trans		&trans  	&trans
+		>;
+		};
+		sym2 {
+		bindings = <
+				&kp ATSN	&td LA(RBKT) LA(LS(RBKT))	&td  LA(LBKT) LA(LS(LBKT))	&kp LPRN	&kp RPRN 	&kp SEMI 	
+		&kp STAR  	&kp PRCNT	&td QMARK EXCL       		&kp DQT   			&kp LBRC  	&kp RBRC	&kp AMPS	&kp COLON 
+		 		&trans 		&trans  			&trans 	&none &none &trans 		
+
+		>;
+		};
+
+		num {
+		bindings = <
+				&hm_l LCTL DOT 	&hm_l LALT N0	&hm_l LGUI N1 		&hm_r RGUI N2 	&hm_r RALT N3		&hm_r RCTL N4	
+		&kp MINUS	&kp PLUS 	&kp N5		&kp N6			&kp N7		&kp N8			&kp N9   	&kp EQUAL
+							&sr LSHIFT AL1 		&trans 		&trans 			&trans  	 
+		>;
+		};
+
+		sys {
+		bindings = <
+				 	&kp ESC			&kp LC(LS(TAB)) 	&kp RC(TAB)		&td LG(V) LG(C) 	&kp UP 		&td Q BKSP 			
+		&td LG(GRAVE) TAB	&td HOME DEL		&td END LG(LBKT) 	&kp LG(RBKT)		&td TAB LEFT  		&kp DOWN 	&td  LC(LG(LS(N4))) RIGHT 	&kp RET 
+		 			 		 				&sr LSHIFT AL1 		&none &none &kp RGUI		
+		>;
+		};
+
+		bt {
+		bindings = <
+				&bt BT_PRV	&bt BT_NXT	&trans 			&trans 	&trans	&trans	
+		&bootloader  	&trans 		&trans 		&trans 			&trans 	&trans 	&trans	&bt BT_CLR
+		 	 	 				&to AL1	&none &none	&none
+		>;
+		};
+
+       		alpha2cap {
+		bindings = <
+		 	 	&kp LS(V)	&kp LS(W)	&kp LS(M) 	 	&kp LS(F)    	&trans		&kp LS(Z)	
+		&kp LS(Q) 	&kp LS(J) 	&kp LS(P)	&kp LS(K)		&kp LS(B)	&kp COMMA	&kp LS(X)	&kp LS(Y) 
+			 	&trans 		&trans 			&trans	&none
+		>;
+		};
+        
+	};
 };
