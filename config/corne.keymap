@@ -49,7 +49,7 @@
             bindings = <&to BT>;
 	    layers = <SM1>; 
         };
-		combo_bspc{
+		combo_bspc {
 			timeout-ms = <30>;
 			key-positions = <9 10>;
             bindings = <&kp BSPC>;
