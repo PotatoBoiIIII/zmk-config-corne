@@ -160,9 +160,9 @@
 		};
        		alpha2 {
 		bindings = <
-		 	 		&kp V 		&kp W		&kp M	 	 	&kp F    	&kp SQT			&kp Z 		
-		&kp Q	 	&kp J 		&kp P		&kp K 			&kp B 		&kp DOT			&kp X		&kp Y 
-			 	 		 		&sk LSHIFT 		&none 		&none &sl AL2U	
+		 	 		&hm_l LCTL V &hm_l LALT W	&hm_l LGUI M		&hm_r RGUI F    &hm_r RALT SQT	 &hm_r RCTL Z 		
+		&kp Q	 	&kp J 		&kp P			&kp K 				&kp B 			&kp DOT			 &kp X			&kp Y 
+			 	 		 		&sk LSHIFT 		&none 				&none &sl AL2U	
 		>;
 		};
 		
@@ -170,7 +170,7 @@
 		bindings = <
 		 			&kp LA(N3)   &kp LS(N3)	&kp DLLR	    	&kp LS(COMMA)	&kp LS(DOT)		&kp CARET	
 		&kp GRAVE	&kp TILDE 	&kp MINUS      	&kp BSLH	 	&kp LBKT		&kp RBKT	 	&kp PIPE 	&kp SLASH
-				  				&trans  		&trans			&trans  	&trans
+				  				&kp LSHIFT 		&trans			&trans  	&trans
 		>;
 		};
 		sym2 {
