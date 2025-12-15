@@ -9,6 +9,7 @@
 #include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/mouse.h>
 #include <dt-bindings/zmk/outputs.h>
+#include <dt-bindings/zmk/pointing.h>
 
 
 
@@ -184,8 +185,8 @@
 
 		num {
 		bindings = <
-					&hm_l LCTL DOT 	&hm_l LALT N0	&hm_l LGUI N1 		&hm_r RGUI N2 	&hm_r RALT N3		&hm_r RCTL N4	
-		&kp MINUS	&kp PLUS 	&kp N5		&kp N6			&kp N7		&kp N8			&kp N9   	&kp EQUAL
+					&hm_l LCTL N2 	&hm_l LALT N3	&hm_l LGUI N4 		&hm_r RGUI N7 	&hm_r RALT N8		&hm_r RCTL N9	
+			&kp N1	&kp PLUS 		&kp MINUS		&kp N5				&kp N6			&kp EQUAL				&kp DOT   		&kp N0
 									&sr LSHIFT AL1 		&trans 			&trans 			&trans  	 
 		>;
 		};
